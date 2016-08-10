@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>leaflet-tilelayer</title>
+  <link rel="stylesheet" href="js/leaflet/leaflet.css">
+  <style>
+    html, body, #map {
+      height: 100%;
+      padding: 0;
+      margin: 0
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <script src="js/leaflet/leaflet.js"></script>
+  <script src="js/layer/baidu.js"></script>
+  <script src="js/layer/tencent.js"></script>
+  <script src="js/layer/bing.js"></script>
+  <script>
+
+    var map = L.map('map');
+    var bingMapKey = 'AqG14NyZGU8IpcZxEIC9X9ugxb99Az-JAgpTUQNvfjGDl0v7-Rjjb5v5DcxFS9mh';
+    
+    var baseLayers = {
+
+      "百度地图": new L.BaiduLayer(),
+      "百度卫星图": new L.BaiduLayer('SATELLITE'),
+      "百度混合地图": L.layerGroup([ new L.BaiduLayer('SATELLITE'), new L.BaiduLayer('HYBRID') ]),
+
+      "腾讯地图": new L.TencentLayer('ROADMAP'),
+      "腾讯卫星图": new L.TencentLayer('SATELLITE'),
+      "腾讯地形图": new L.TencentLayer('TERRAIN'),
+
+      "bing地图": new L.BingLayer(bingMapKey, {
+        type: 'Road'
+      }),
+      "bing卫星图": new L.BingLayer(bingMapKey, {
+        type: 'Aerial'
+      }),
+
+      "高德地图": L.tileLayer('http://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
+        subdomains: "1234"
+      }),
+      '高德卫星图': L.layerGroup([L.tileLayer('http://webst0{s}.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}', {
+        subdomains: "1234"
+      }), L.tileLayer('http://t{s}.tianditu.cn/DataServer?T=cta_w&X={x}&Y={y}&L={z}', {
+        subdomains: "1234"
+      })]),
+
+      //http://t{s}.tianditu.com/DataServer?T=vec_c&x={x}&y={y}&l={z}
+      "天地图": L.layerGroup([L.tileLayer('http://t{s}.tianditu.cn/DataServer?T=vec_c&X={x}&Y={y}&L={z}', {
+        subdomains: "01234567"
+      }), L.tileLayer('http://t{s}.tianditu.cn/DataServer?T=cva_w&X={x}&Y={y}&L={z}', {
+        subdomains: "01234567"
+      })]),
+      "天地卫星图": L.layerGroup([L.tileLayer('http://t{s}.tianditu.cn/DataServer?T=img_w&X={x}&Y={y}&L={z}', {
+        subdomains: "01234567"
+      }), L.tileLayer('http://t{s}.tianditu.cn/DataServer?T=cia_w&X={x}&Y={y}&L={z}', {
+        subdomains: "01234567"
+      })]),
+      "天地地形图": L.layerGroup([L.tileLayer('http://t{s}.tianditu.cn/DataServer?T=ter_w&X={x}&Y={y}&L={z}', {
+        subdomains: "01234567"
+      }), L.tileLayer('http://t{s}.tianditu.cn/DataServer?T=cta_w&X={x}&Y={y}&L={z}', {
+        subdomains: "01234567"
+      })]),
+
+
+      "谷歌地图": L.tileLayer('http://www.google.cn/maps/vt?lyrs=m@189&gl=cn&x={x}&y={y}&z={z}'),
+      "谷歌卫星图": L.tileLayer('http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}'),
+
+      "GeoQ": L.layerGroup([
+        L.tileLayer('http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineCommunity/MapServer/tile/{z}/{y}/{x}'),
+        L.tileLayer('http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineStreetColor/MapServer/tile/{z}/{y}/{x}'),
+        L.tileLayer('http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineStreetPurplishBlue/MapServer/tile/{z}/{y}/{x}'),
+        L.tileLayer('http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineStreetGray/MapServer/tile/{z}/{y}/{x}'),
+        L.tileLayer('http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineStreetWarm/MapServer/tile/{z}/{y}/{x}'),
+        L.tileLayer('http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineStreetCold/MapServer/tile/{z}/{y}/{x}')
+      ]),
+      'GeoQ灰色底图': L.tileLayer('http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineStreetPurplishBlue/MapServer/tile/{z}/{y}/{x}'),
+
+      "openstreetmap": L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'),
+      "Foursquare": L.tileLayer('https://a.tiles.mapbox.com/v3/foursquare.map-0y1jh28j/{z}/{x}/{y}.png', {
+        attribution: 'Map &copy; Pacific Rim Coordination Center (PRCC).  Certain data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+        key: 'BC9A493B41014CAABB98F0471D759707',
+        styleId: 22677
+      }).addTo(map)
+      
+    };
+    var layercontrol = L.control.layers(baseLayers).addTo(map);
+    map.setView(L.latLng(37.550339, 104.114129), 4);
+  </script>
+</body>
+</html>
